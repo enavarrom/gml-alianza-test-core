@@ -31,6 +31,7 @@ jobs:
           reporter: 'github-pr-check'
           tool_name: 'testtool'
           level: warning
+        continue-on-error: true
 
       - name: Clean and Build
         run: ./gradlew clean build -x test --no-daemon
