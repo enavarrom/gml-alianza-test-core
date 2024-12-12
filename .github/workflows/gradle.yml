@@ -40,9 +40,13 @@ jobs:
 
       - name: Clean and Build
         run: gradle clean build -x test --no-daemon
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
       - name: Unit Test
         run: gradle test --no-daemon
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
       - name: Codecov Coverage
         uses: codecov/codecov-action@v5

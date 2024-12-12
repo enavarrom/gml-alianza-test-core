@@ -1,6 +1,7 @@
 package com.enavarrom.tests.gml.alianza.customer.infrastructure.exception;
 
 import com.enavarrom.tests.gml.alianza.customer.application.exception.CustomerNotFoundException;
+import io.sentry.Sentry;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -16,11 +17,13 @@ public class CustomerApiExceptionHandler {
 
     @ExceptionHandler(CustomerNotFoundException.class)
     public ResponseEntity<String> handleCustomerNotFoundException(CustomerNotFoundException ex) {
+        Sentry.captureException(ex);
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        Sentry.captureException(ex);
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors()
                 .forEach((error) -> {
