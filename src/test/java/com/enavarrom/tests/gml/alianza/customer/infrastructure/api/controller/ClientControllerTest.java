@@ -1,10 +1,8 @@
 package com.enavarrom.tests.gml.alianza.customer.infrastructure.api.controller;
 
-import com.enavarrom.tests.gml.alianza.customer.application.exception.CustomerNotFoundException;
-import com.enavarrom.tests.gml.alianza.customer.application.services.CustomerService;
-import com.enavarrom.tests.gml.alianza.customer.domain.entity.Customer;
-import com.enavarrom.tests.gml.alianza.customer.infrastructure.api.dto.CustomerResponseRecord;
-import com.enavarrom.tests.gml.alianza.customer.infrastructure.api.mapper.CustomerMapper;
+import com.enavarrom.tests.gml.alianza.customer.application.exception.ClientNotFoundException;
+import com.enavarrom.tests.gml.alianza.customer.application.services.ClientService;
+import com.enavarrom.tests.gml.alianza.customer.domain.entity.Client;
 import com.enavarrom.tests.gml.alianza.customer.infrastructure.exception.CustomerApiExceptionHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,12 +23,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-class CustomerControllerTest {
+class ClientControllerTest {
 
     private MockMvc mockMvc;
 
     @Mock
-    private CustomerService customerService;
+    private ClientService clientService;
 
     @InjectMocks
     private CustomerController customerController;
@@ -45,44 +43,44 @@ class CustomerControllerTest {
 
     @Test
     void getCustomerBySharedKey_ShouldReturnCustomer_WhenCustomerExists() throws Exception {
-        Customer customer = new Customer();
-        customer.setSharedKey("1234");
-        customer.setBusinessId("John Doe");
+        Client client = new Client();
+        client.setSharedKey("1234");
+        client.setBusinessId("John Doe");
 
-        when(customerService.findBySharedKey("1234")).thenReturn(customer);
+        when(clientService.getBySharedKey("1234")).thenReturn(client);
 
         mockMvc.perform(get("/customers/1234"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.sharedKey").value("1234"))
                 .andExpect(jsonPath("$.businessId").value("John Doe"));
 
-        verify(customerService, times(1)).findBySharedKey("1234");
+        verify(clientService, times(1)).getBySharedKey("1234");
     }
 
     @Test
     void getCustomerBySharedKey_ShouldReturnNotFound_WhenCustomerDoesNotExist() throws Exception {
-        when(customerService.findBySharedKey("1234")).thenThrow(new CustomerNotFoundException("Customer Not found"));
+        when(clientService.getBySharedKey("1234")).thenThrow(new ClientNotFoundException("Customer Not found"));
 
         mockMvc.perform(get("/customers/1234"))
                 .andExpect(status().isNotFound());
 
-        verify(customerService, times(1)).findBySharedKey("1234");
+        verify(clientService, times(1)).getBySharedKey("1234");
     }
 
     @Test
     void getAllCustomers_ShouldReturnAllCustomers() throws Exception {
-        Customer customer = new Customer();
-        customer.setSharedKey("1234");
-        customer.setBusinessId("John Doe");
+        Client client = new Client();
+        client.setSharedKey("1234");
+        client.setBusinessId("John Doe");
 
-        when(customerService.findAll()).thenReturn(Collections.singletonList(customer));
+        when(clientService.findAll()).thenReturn(Collections.singletonList(client));
 
         mockMvc.perform(get("/customers"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].sharedKey").value("1234"))
                 .andExpect(jsonPath("$[0].businessId").value("John Doe"));
 
-        verify(customerService, times(1)).findAll();
+        verify(clientService, times(1)).findAll();
     }
 
     @Test
@@ -93,7 +91,7 @@ class CustomerControllerTest {
                                 ",\"sharedKey\":\"johndoe\",\"phone\":\"3005555555\"}"))
                 .andExpect(status().isCreated());
 
-        verify(customerService, times(1)).addCustomer(any());
+        verify(clientService, times(1)).create(any());
     }
 
     @Test
@@ -104,7 +102,7 @@ class CustomerControllerTest {
                                 ",\"sharedKey\":\"johndoe\",\"phone\":\"1005555555\"}"))
                 .andExpect(status().isBadRequest());
 
-        verify(customerService, times(0)).addCustomer(any());
+        verify(clientService, times(0)).create(any());
     }
 }
 
