@@ -62,7 +62,6 @@ sentry {
 
 	org = "personal-12w"
 	projectName = "gml-alianza-test-core"
-	//authToken = System.getenv("SENTRY_AUTH_TOKEN")
-	authToken = "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"
+	authToken = System.getenv("SENTRY_AUTH_TOKEN")
 }
 
