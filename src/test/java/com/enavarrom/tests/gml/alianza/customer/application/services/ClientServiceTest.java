@@ -81,6 +81,7 @@ class ClientServiceTest {
     void testCreate() {
         // Arrange
         Client client = new Client();
+        client.setBusinessId("Jhon Doe");
 
         // Act
         clientService.create(client);
