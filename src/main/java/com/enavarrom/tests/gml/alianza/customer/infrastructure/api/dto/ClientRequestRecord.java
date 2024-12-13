@@ -4,8 +4,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
-public record CustomerRequestRecord(
-                                    @NotNull(message = "The shared key can not be null")
+import java.util.Date;
+
+public record ClientRequestRecord(
                                     String sharedKey,
                                     @NotNull(message = "The business Id can not be null")
                                     String businessId,
@@ -17,5 +18,7 @@ public record CustomerRequestRecord(
                                             message = "Invalid phone number"
                                     )
                                     @NotNull(message = "The phone can not be null")
-                                    String phone) {
+                                    String phone,
+                                    Date startDate,
+                                    Date endDate) {
 }

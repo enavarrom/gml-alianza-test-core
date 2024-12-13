@@ -1,6 +1,6 @@
 package com.enavarrom.tests.gml.alianza.customer.infrastructure.exception;
 
-import com.enavarrom.tests.gml.alianza.customer.application.exception.CustomerNotFoundException;
+import com.enavarrom.tests.gml.alianza.customer.application.exception.ClientNotFoundException;
 import io.sentry.Sentry;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +15,8 @@ import java.util.Map;
 @RestControllerAdvice
 public class CustomerApiExceptionHandler {
 
-    @ExceptionHandler(CustomerNotFoundException.class)
-    public ResponseEntity<String> handleCustomerNotFoundException(CustomerNotFoundException ex) {
+    @ExceptionHandler(ClientNotFoundException.class)
+    public ResponseEntity<String> handleCustomerNotFoundException(ClientNotFoundException ex) {
         Sentry.captureException(ex);
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }

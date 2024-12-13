@@ -1,13 +1,12 @@
 package com.enavarrom.tests.gml.alianza.customer.domain.entity;
 
-import lombok.AccessLevel;
 import lombok.Data;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
-public class Customer {
+public class Client {
 
     private String sharedKey;
 
@@ -17,6 +16,9 @@ public class Customer {
 
     private String phone;
 
-    @Setter(AccessLevel.NONE)
+    private Date startDate;
+
+    private Date endDate;
+
     private LocalDateTime createdDate;
 }
